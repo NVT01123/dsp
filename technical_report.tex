@@ -1,0 +1,302 @@
+\documentclass[11pt,a4paper]{article}
+
+% ==============================================================================
+% CẤU HÌNH GÓI VÀ ĐỊNH DẠNG CHUẨN CHO TECHNICAL REPORT
+% ==============================================================================
+
+% --- Ngôn ngữ và Bảng mã ---
+\usepackage[utf8]{vietnam}
+\usepackage{microtype} % Cải thiện khoảng cách chữ và ngắt dòng
+
+% --- Căn chỉnh lề trang (Page Layout) ---
+\usepackage[
+    a4paper,
+    top=25mm,
+    bottom=25mm,
+    left=25mm,
+    right=25mm,
+    headheight=15pt,
+    footskip=12mm
+]{geometry}
+
+% --- Khoảng cách dòng và đoạn ---
+\usepackage{setspace}
+\setstretch{1.15}       % Độ giãn dòng chuẩn tài liệu kỹ thuật
+\usepackage{parskip}    % Tự động cách đoạn, không thụt dòng đầu đoạn
+
+% --- Toán học & Ký hiệu kỹ thuật ---
+\usepackage{amsmath, amssymb, amsfonts}
+
+% --- Đồ họa và Bảng màu ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% Bảng màu chuyên nghiệp (Navy / Slate / Gray)
+\definecolor{primaryblue}{RGB}{16, 52, 96}      % Màu chủ đạo (Tiêu đề, header)
+\definecolor{secondaryblue}{RGB}{41, 128, 185}  % Màu phụ (Subsection, link)
+\definecolor{darkgray}{RGB}{55, 65, 81}         % Màu chữ phụ, header text
+\definecolor{lightgray}{RGB}{248, 249, 250}     % Màu nền bảng, code block
+\definecolor{bordergray}{RGB}{222, 226, 230}    % Màu viền khung
+\definecolor{accentgreen}{RGB}{40, 167, 69}     % Màu nhấn trạng thái / note
+
+% --- Header & Footer (Tiêu đề đầu và chân trang) ---
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\textcolor{darkgray}{\textbf{Athena Technical Report} --- Athena Decoder System}}
+\rhead{\small\textcolor{darkgray}{v1.0.0}}
+\lfoot{\small\textcolor{darkgray}{Tài liệu kỹ thuật nội bộ}}
+\rfoot{\small\textcolor{darkgray}{Trang \thepage/\pageref{LastPage}}}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% --- Định dạng tiêu đề các đề mục (Section Headings) ---
+\usepackage{titlesec}
+\titleformat{\section}
+    {\color{primaryblue}\normalfont\Large\bfseries}
+    {\thesection}{1em}{}[{\color{primaryblue}\titlerule[0.8pt]}]
+\titleformat{\subsection}
+    {\color{secondaryblue}\normalfont\large\bfseries}
+    {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+    {\color{darkgray}\normalfont\normalsize\bfseries}
+    {\thesubsubsection}{1em}{}
+
+% --- Định dạng Bảng biểu & Hình ảnh ---
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\captionsetup{font=small, labelfont=bf, textfont=it, skip=6pt}
+
+% --- Danh sách (Lists) ---
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=3pt, leftmargin=1.5em}
+\setlist[enumerate]{noitemsep, topsep=3pt, leftmargin=1.5em}
+
+% --- Hiển thị mã nguồn / Cấu hình (Code Listings) ---
+\usepackage{listings}
+\lstset{
+    backgroundcolor=\color{lightgray},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{bordergray},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{primaryblue}\bfseries,
+    stringstyle=\color{secondaryblue},
+    commentstyle=\color{gray}\itshape,
+    showstringspaces=false,
+    tabsize=2
+}
+
+% --- Khung ghi chú / Hộp thông tin (Callout Box) ---
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+\newtcolorbox{infobox}[1][]{
+    colback=lightgray,
+    colframe=secondaryblue,
+    coltitle=white,
+    fonttitle=\bfseries\small,
+    title=#1,
+    arc=1.5mm,
+    boxrule=0.8pt,
+    left=3mm, right=3mm, top=2.5mm, bottom=2.5mm
+}
+
+% --- Siêu liên kết (Hyperlinks & PDF Metadata) ---
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primaryblue,
+    citecolor=primaryblue,
+    urlcolor=secondaryblue,
+    plainpages=false,
+    pdfencoding=auto,
+    pdftitle={Athena Technical Report - Athena Decoder System},
+    pdfauthor={Nguyễn Văn Tráng},
+    pdfsubject={Hệ thống xử lý tín hiệu SDR và giải mã vệ tinh Athena}
+}
+
+% ==============================================================================
+% NỘI DUNG TÀI LIỆU
+% ==============================================================================
+\begin{document}
+
+% --- Trang bìa / Khối thông tin báo cáo kỹ thuật ---
+\begin{titlepage}
+    \centering
+    \vspace*{1.0cm}
+
+    {\Huge\bfseries\color{primaryblue} ATHENA TECHNICAL REPORT\par}
+    \vspace{0.4cm}
+    {\LARGE\bfseries\color{secondaryblue} Athena Decoder System Architecture \& Pipeline\par}
+    \vspace{0.6cm}
+    {\large Hệ thống xử lý tín hiệu SDR \& Giải mã dữ liệu vệ tinh\par}
+
+    \vspace{1.5cm}
+
+    % Bảng siêu dữ liệu tài liệu
+    \begin{tcolorbox}[colback=white, colframe=bordergray, arc=1.5mm, width=0.9\textwidth]
+        \centering
+        \begin{tabularx}{\textwidth}{lX}
+            \textbf{Tác giả:}       & Nguyễn Văn Tráng                                         \\
+            \textbf{Dự án:}         & Athena Satellite Decoder                                 \\
+            \textbf{Loại tài liệu:} & Báo cáo thiết kế \& Kỹ thuật hệ thống (Technical Report) \\
+            \textbf{Phiên bản:}     & 1.0.0                                                    \\
+            \textbf{Ngày ban hành:} & Tháng 09/2026                                            \\
+            \textbf{Trạng thái:}    & Bản dự thảo kỹ thuật (Working Draft)                     \\
+        \end{tabularx}
+    \end{tcolorbox}
+
+    \vfill
+
+    % Tóm tắt báo cáo
+    \begin{infobox}[Tóm tắt tài liệu (Executive Summary)]
+        Tài liệu kỹ thuật này mô tả chi tiết kiến trúc phần mềm, luồng dữ liệu và các thuật toán cốt lõi cấu thành nên \textbf{Athena Decoder System} -- hệ thống xử lý tín hiệu và giải mã thời gian thực dành cho vệ tinh thời tiết và viễn thám quỹ đạo thấp (LEO). Báo cáo bao quát toàn bộ chuỗi quy trình (pipeline): từ tầng thu thập tín hiệu băng thông rộng qua phần cứng SDR, qua các bước xử lý băng gốc (Baseband DSP), giải điều chế (Demodulation), giải mã kênh (FEC Decoding), cho đến khâu trích xuất, kết xuất hình ảnh và dữ liệu đo xa (telemetry). Đồng thời, tài liệu cũng nhấn mạnh thiết kế phân tách giữa lõi tính toán hiệu năng cao (DSP engine) và giao diện hiển thị, tạo tiền đề cho các hướng mở rộng trong tương lai.
+    \end{infobox}
+
+    \vspace{0.8cm}
+\end{titlepage}
+
+% --- Mục lục ---
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+
+% --- Nội dung các phần chính ---
+\pagenumbering{arabic}
+
+% ------------------------------------------------------------------------------
+% SECTION 1: SYSTEM OVERVIEW
+% ------------------------------------------------------------------------------
+\section{System Overview}
+Phần này mô tả tổng quan về hệ thống Athena Decoder, bao gồm bối cảnh dự án, kiến trúc tổng thể giữa khối xử lý tín hiệu lõi và giao diện hiển thị trực quan.
+
+\subsection{Purpose \& Objectives}
+Mục đích cốt lõi của dự án \textbf{Athena Decoder System} là nghiên cứu, thiết kế và phát triển một hệ thống xử lý tín hiệu vô tuyến (SDR) toàn diện, có khả năng tiếp nhận, giải điều chế và giải mã luồng dữ liệu từ các vệ tinh viễn thám và thời tiết. Trong bối cảnh công nghệ vô tuyến mềm (Software-Defined Radio) ngày càng phổ biến, Athena hướng tới việc cung cấp một giải pháp phần mềm tối ưu về hiệu năng, đáp ứng khối lượng dữ liệu khổng lồ truyền về từ không gian.
+
+Các mục tiêu cụ thể của hệ thống bao gồm:
+\begin{itemize}
+    \item \textbf{Xử lý tín hiệu (Signal Processing):} Đảm bảo toàn bộ chuỗi tính toán từ lúc nhận mẫu tín hiệu I/Q gốc đến khi kết xuất hình ảnh được thực hiện với độ trễ tối thiểu, không gây nghẽn cổ chai tại các tầng giải mã.
+    \item \textbf{Kiến trúc phân tách (Decoupled Architecture):} Tách bạch hoàn toàn giữa lõi xử lý tín hiệu số và giao diện người dùng. Kiến trúc này không chỉ giúp tối ưu hóa tài nguyên phần cứng mà còn cho phép dễ dàng triển khai hệ thống trên các máy chủ không màn hình (headless servers) hoặc mở rộng quản trị qua Web/Remote UI.
+    \item \textbf{Tự động hóa toàn trình:} Hướng tới việc giảm thiểu can thiệp thủ công thông qua cơ chế tự động theo dõi sóng mang, bù trừ Doppler và tự động phát hiện đồng bộ khung.
+\end{itemize}
+
+\subsection{Core Features}
+Để hiện thực hóa các mục tiêu trên, hệ thống Athena Decoder được thiết kế với kiến trúc dạng module, mang lại các tính năng kỹ thuật và khả năng mở rộng cao:
+
+\begin{itemize}
+    \item \textbf{High-throughput DSP Engine:} Cốt lõi của hệ thống là một pipeline tính toán đa luồng (multi-threaded) chuyên sâu cho các mẫu I/Q tốc độ cao. Lõi tính toán này tích hợp đầy đủ các bộ lọc số (FIR, RRC), vòng khóa pha (PLL) và các thuật toán phục hồi định thời ký hiệu (symbol timing recovery) được tối ưu hóa ở mức tập lệnh.
+    \item \textbf{Real-time Spectrum \& Waterfall:} Tích hợp sẵn công cụ phân tích phổ FFT hiệu năng cao (sử dụng 8192-point FFT). Công cụ này trực quan hóa phổ tần số và biểu đồ thác nước (waterfall) một cách mượt mà, giúp dễ dàng quan sát chất lượng tín hiệu, phân tích nhiễu và tinh chỉnh dải băng tần mục tiêu.
+    \item \textbf{Multi-format Decoding:} Athena Decoder hỗ trợ đa dạng phương thức giải điều chế (BPSK, QPSK, OQPSK) và tích hợp các chuẩn sửa lỗi tiến (FEC) quốc tế như Viterbi, Reed-Solomon, cùng bộ giải xáo trộn dữ liệu (Derandomizer) theo chuẩn CCSDS. Điều này cho phép hệ thống tương thích với nhiều chòm sao vệ tinh khác nhau (ví dụ: NOAA, Meteor-M, MetOp).
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+% SECTION 2: SIGNAL ACQUISITION & PRE-PROCESSING
+% ------------------------------------------------------------------------------
+\section{Signal Acquisition \& Pre-processing}
+Giai đoạn đầu tiên trong luồng xử lý của Athena Decoder System đảm nhiệm việc thu thập dữ liệu thô và làm sạch tín hiệu. Quá trình này đặc biệt quan trọng vì chất lượng của tín hiệu băng gốc (baseband signal) ảnh hưởng trực tiếp đến tỷ số tín hiệu trên nhiễu (SNR) và tỷ lệ lỗi bit (BER) ở các tầng giải mã phía sau.
+
+\subsection{Hardware Interfaces \& Data Sources}
+Hệ thống hỗ trợ tiếp nhận tín hiệu từ hai nguồn dữ liệu chính:
+\begin{itemize}
+    \item \textbf{Thiết bị SDR thực tế (Live SDR):} Hỗ trợ kết nối và điều khiển trực tiếp các phần cứng vô tuyến như RTL-SDR, HackRF, và USRP thông qua các API tiêu chuẩn. Giao thức điều khiển cho phép hệ thống chủ động thiết lập tần số trung tâm (center frequency), tốc độ lấy mẫu (sample rate) và độ lợi vô tuyến (RF gain) dựa trên cấu hình vệ tinh mục tiêu.
+    \item \textbf{Tập tin tín hiệu gốc (Baseband Recordings - Offline Mode):} Hỗ trợ đọc các file ghi sóng thô, phục vụ cho việc xử lý các file tín hiệu gốc đã được thu sẵn.
+\end{itemize}
+
+\subsection{I/Q Data Formatting \& Ingestion}
+Dữ liệu băng gốc từ phần cứng được truyền về dưới dạng các mẫu số phức. Trong hệ thống Athena, dữ liệu này được chuẩn hóa và quản lý như sau:
+\begin{itemize}
+    \item \textbf{Định dạng bộ nhớ:} Các mẫu I (In-phase) và Q (Quadrature) được biểu diễn bằng kiểu dữ liệu số thực dấu phẩy động 32-bit (\texttt{float}) và được lưu trữ xen kẽ (interleaved array) trong bộ nhớ: $I_0, Q_0, I_1, Q_1, \dots$. Dữ liệu từ tất cả các nguồn sẽ được chuyển đổi về định dạng này trước khi đưa vào bất kỳ quá trình xử lý nào. 
+    \item \textbf{Quản lý luồng (Stream Ingestion):} Hệ thống sử dụng kiến trúc bộ đệm vòng (Ring Buffer) không chặn (non-blocking) kết hợp cơ chế đọc luồng liên tục để tránh hiện tượng mất mẫu (dropped samples) khi hệ điều hành có độ trễ cấp phát tài nguyên.
+\end{itemize}
+
+\subsection{Hardware Impairment Correction}
+Các thiết bị SDR phổ thông thường tồn tại các khuyết điểm về mặt linh kiện tương tự (analog), dẫn đến suy hao tín hiệu. Hệ thống tích hợp các bước tự động hiệu chỉnh:
+\begin{itemize}
+    \item \textbf{Loại bỏ thành phần DC (DC Offset Removal):} Áp dụng cơ chế tính trung bình động (moving average) để triệt tiêu chóp nhiễu tại tần số trung tâm (DC spike) do quá trình rò rỉ sóng mang cục bộ (LO leakage) của phần cứng gây ra.
+          \begin{equation}
+              y[n] = x[n] - (y[n - 1] * \beta + x[n] * \alpha) 
+          \end{equation}
+    \item \textbf{Cân bằng I/Q (I/Q Imbalance Compensation):} Sử dụng thuật toán bù trừ sự sai lệch về biên độ và góc pha vuông góc giữa hai kênh I và Q, đảm bảo chòm sao tín hiệu (constellation) không bị méo lệch.
+\end{itemize}
+
+\subsection{Pre-filtering \& Signal Normalization}
+Bước cuối cùng trong tiền xử lý nhằm chuẩn bị luồng dữ liệu lý tưởng cho khối Baseband DSP:
+\begin{itemize}
+    \item \textbf{Lọc tiền xử lý (Pre-filtering):} Một bộ lọc thông dải có đáp ứng xung hữu hạn (FIR Bandpass Filter) thô được áp dụng để cắt bỏ các tín hiệu nhiễu và đài phát lân cận nằm ngoài dải phổ của vệ tinh mục tiêu.
+    \item \textbf{Chuẩn hóa tín hiệu (Normalization / AGC):} Thuật toán điều chỉnh độ lợi tự động (Automatic Gain Control - AGC) được triển khai để chuẩn hóa biên độ tín hiệu I/Q về dải động (dynamic range) tối ưu (thường là $[-1.0, 1.0]$). Quá trình này giúp ngăn ngừa hiện tượng tràn số và giữ mức năng lượng tín hiệu đầu vào luôn ổn định cho các khối xử lý tiếp theo.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+% SECTION 3: BASEBAND DSP
+% ------------------------------------------------------------------------------
+\section{Baseband DSP}
+Các khối xử lý tín hiệu băng gốc:
+\begin{itemize}
+    \item \textbf{Resampling \& Decimation:} Chuyển đổi tốc độ lấy mẫu (sample rate) phù hợp với tốc độ ký hiệu (symbol rate).
+    \item \textbf{Carrier Tracking \& Doppler Correction:} Bù trừ độ lệch tần số Doppler gây ra bởi chuyển động tương đối của vệ tinh LEO.
+    \item \textbf{Filtering:} Bộ lọc định hình xung RRC (Root Raised Cosine) tối ưu hóa tỷ số tín hiệu trên nhiễu (SNR).
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+% SECTION 4: DEMODULATION
+% ------------------------------------------------------------------------------
+\section{Demodulation}
+Mô tả các thuật toán giải điều chế số:
+\begin{itemize}
+    \item Phục hồi xung định thời ký hiệu (Symbol Timing Recovery / Gardner, Mueller \& Müller).
+    \item Phục hồi sóng mang và pha (Costas Loop / PLL).
+    \item Chòm sao tín hiệu (Constellation diagram) và quyết định bit mềm/cứng (Soft/Hard Decision Slicing).
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+% SECTION 5: DECODING
+% ------------------------------------------------------------------------------
+\section{Decoding}
+Chuỗi giải mã kênh và sửa lỗi chuyển tiếp (FEC - Forward Error Correction):
+\begin{itemize}
+    \item Tìm kiếm đồng bộ khung (Frame Sync word detection).
+    \item Bộ giải mã Viterbi (Convolutional code de-interleaver).
+    \item Bộ giải mã Reed-Solomon (khắc phục lỗi chùm).
+    \item Giải xáo trộn dữ liệu (Derandomizer / Descrambler) theo tiêu chuẩn CCSDS.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+% SECTION 6: IMAGE & TELEMETRY PROCESSING
+% ------------------------------------------------------------------------------
+\section{Image \& Telemetry Processing}
+Tách và xử lý luồng dữ liệu tải hữu ích (payload data):
+\begin{itemize}
+    \item Tách các kênh phổ hình ảnh (ví dụ các kênh quét quang học, hồng ngoại nhiệt).
+    \item Hiệu chuẩn bức xạ cảm biến (Radiometric calibration) và bù méo hình học (Geometric correction).
+    \item Trích xuất và kiểm tra tính toàn vẹn các gói tin đo xa (Telemetry housekeeping packets).
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+% SECTION 7: OUTPUT FORMAT
+% ------------------------------------------------------------------------------
+\section{Output Format}
+Quy chuẩn định dạng dữ liệu đầu ra của hệ thống:
+\begin{itemize}
+    \item \textbf{Dữ liệu hình ảnh:} Ảnh RGB/Grayscale định dạng PNG không nén, GeoTIFF có gắn tọa độ địa lý.
+    \item \textbf{Dữ liệu đo xa (Telemetry):} Tập tin JSON hoặc CSV có timestamp đồng bộ phục vụ lưu trữ cơ sở dữ liệu.
+    \item \textbf{Dữ liệu đồ họa FFT:} Mảng phổ tần và bảng màu thác nước ARGB phục vụ hiển thị client.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+% SECTION 8: FUTURE ROADMAP
+% ------------------------------------------------------------------------------
+\section{Future Roadmap}
+Kế hoạch phát triển và tối ưu hóa các phiên bản tiếp theo:
+\begin{itemize}
+    \item Tích hợp tăng tốc phần cứng thông qua GPU / OpenCL cho bộ tính toán FFT và bộ giải mã Viterbi.
+    \item Phát triển giao diện WebUI tương tác qua WebSocket dựa trên dữ liệu phổ nén nhị phân.
+    \item Mở rộng hỗ trợ các chuẩn vệ tinh quỹ đạo địa tĩnh (GEO) và vệ tinh nano CubeSat.
+\end{itemize}
+
+\end{document}
